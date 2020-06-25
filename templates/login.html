@@ -1,13 +1,53 @@
 <html>
     <head>
         <title>
-            login
+            JOIN ROOM
         </title>
     </head>
-    <body>
-        <form action="/login">
-            <input type="text" name="name" placeholder="entername">
-            <input type="submit" value="join">
-        </form>
-    </body>
 </html>
+<body  style="background: #CA1D5F; /* fallback for old browsers */
+    background: -webkit-linear-gradient(right, #CA1D5F, #db73bc);
+    background: -moz-linear-gradient(right, #CA1D5F, #db73bc);
+    background: -o-linear-gradient(right, #CA1D5F, #db73bc);
+    background: linear-gradient(to left, #CA1D5F, #db73bc);
+    font-family: Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;">
+    <div class="login-page" style="width: 360px;
+                                padding: 8% 0 0;
+                                    margin: auto;">
+    <div class="form" style=" position: relative;
+    z-index: 1;
+    background: #FFFFFF;
+    max-width: 360px;
+    margin: 0 auto 100px;
+    padding: 45px;
+    text-align: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);">
+      <form class="login-form" action="/login">
+        <input type="text" placeholder="enter name" name="name" style="font-family: Roboto, sans-serif;
+        outline: 0;
+        background: #f2f2f2;
+        width: 100%;
+        border: 0;
+        margin: 0 0 15px;
+        padding: 15px;
+        box-sizing: border-box;
+        font-size: 14px;">
+    <input type="submit" value="join" style="font-family: Roboto, sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #db4074;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;"/>
+     </form>
+    </div>
+  </div>
+  </body>
+  </html>
