@@ -26,16 +26,14 @@
     </body>
     <script>
         var socket= new WebSocket("wss://pranchatapp.cleverapps.io/ws")
-        var output;
-        function init(){
-            output=document.getElementById("output")
-            test()
-        }
-        function test(){
+        var output=document.getElementById("output");
+            
+        
             socket.onopen=function(e){
             console.log("connection established")
             writeToScreen("connected");
             }
+        function test(){
             
             
             
