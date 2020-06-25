@@ -41,7 +41,11 @@ func homehandler(w http.ResponseWriter,r *http.Request){
 }
 func loginhandler(w http.ResponseWriter,r *http.Request){
 	q:=r.FormValue("name")
+	if q==""{
+		fmt.Fprintf(w,"Go back and enter a valid name!!!")
+	}else{
 	http.Redirect(w,r,"/chat?q="+q,307)
+	}
 }
 func chathandler(w http.ResponseWriter,r *http.Request){
 	q:=r.FormValue("q")
