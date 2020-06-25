@@ -1,66 +1,156 @@
-<html>
-    <head>
-        <title>CHAT</title>
-        <style>
-            .header{
-                background-color: #15223b;
-                width: 100%;
-                margin: 0;
-                padding: 10px;
-                color: white;
-            }
-        </style>
-    </head>
-    <header>
-        <div class="header">
-            <h2>chatapp</h2>
-        </div>
-    </header>
-    <body>
-        <div id="output" style="width: 500;height: 500;border: 5px solid black;"></div>
-        <form>
-            <input type="hidden" value="{{.}}" id="user">
-            <input type="text" name="msg" id="msg">
-            <input type="button" value="send" onclick="test()">
-        </form>
-    </body>
-    <script>
-        var socket= new WebSocket("wss://pranchatapp.cleverapps.io/ws")
-        var output=document.getElementById("output");
-            
-        
-            socket.onopen=function(e){
-            console.log("connection established")
-            writeToScreen("connected");
-            }
-        function test(){
-            
-            
-            
-            var msg=document.getElementById("msg").value;
-            var user=document.getElementById("user").value;
-            console.log(msg)
-            socket.send(JSON.stringify(
-                {
-                    username:user,
-                    message:msg
-                }
-            ));
+<!doctype html>
+<html lang="en">
+  <head>
+      <title>CHATROOM</title>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="custom.css">
+    <style>
+        body{
+  font-family: 'Raleway', sans-serif;
+  background: #E9ECE9;
+}
+.comments-main{
+  background: #FFF;
+}
+.comment time, .comment:hover time,.icon-rocknroll, .like-count {
+  -webkit-transition: .25s opacity linear;
+  transition: .25s opacity linear;
+}
+.comments-main ul li{
+  list-style: none;
+}
+.comments .comment {
+  padding: 5px 10px;
+  background: #00AF90;
+}
+.comments .comment:hover time{
+  opacity: 1;
+}
+.comments .user-img img {
+  width: 50px;
+  height: 50px;
+}
+.comments .comment h4 {
+  display: inline-block;
+  font-size: 16px;
+}
+.comments .comment h4 a {
+  color: #404040;
+  text-decoration: none;
+}
+.comments .comment .icon-rocknroll {
+  color: #545454;
+  font-size: .85rem;
+}
+.comments .comment .icon-rocknroll:hover {
+  opacity: .5;
+}
+.comments .comment time,.comments .comment .like-count,.comments .comment .icon-rocknroll {
+  font-size: .75rem;
+  opacity: 0;
+}
+.comments .comment time, .comments .comment .like-count {
+  font-weight: 300;
+}
+.comments .comment p {
+  font-size: 13px;
+}
+.comments .comment p .reply {
+  color: #BFBFA8;
+  cursor: pointer;
+}
+.comments .comment .active {
+  opacity: 1;
+}
+.icon-rocknroll {
+  background: none;
+  outline: none;
+  cursor: pointer;
+  margin: 0 .125rem 0 0;
+}
+.comments .comment:hover .icon-rocknroll,.comments .comment:hover .like-count {
+  opacity: 1;
+}
+.comment-box-main{
+  background: #CA1D5F;
+}
+@media (min-width: 320px) and (max-width: 480px){
+  .comments .comment h4 {
+    font-size: 12px;
+  }
+  .comments .comment p{
+    font-size: 11px;
+  }
+  .comment-box-main .send-btn button{
+    margin-left: 5px;
+  }
+}
+    </style>
+  </head>
+  <body>
+	<div class="container">
+		<div class="row mt-5">
+			<div class="col-md-6 offset-md-3 col-sm-6 offset-sm-3 col-12 comments-main pt-4 rounded">
+				<ul class="p-0" id="output">
+					
+                    </ul>
 
+					
+				<div class="row comment-box-main p-3 rounded-bottom">
+			  		<div class="col-md-9 col-sm-9 col-9 pr-0 comment-box">
+                          <form action="/login">
+                        <input type="hidden" value="{{.}}" id="user">
+					  <input type="text" class="form-control" name="msg" id="msg" placeholder="Type a message ...." />
+			  		</div>
+			  		<div class="col-md-3 col-sm-2 col-2 pl-0 text-center send-btn">
+                          <input type="button" class="btn btn-info" onclick="test()" value="send">
+                        </form>
+			  		</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  </body>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/0.12.14/vue.min.js'></script>
+  <script>
+    var socket= new WebSocket("wss://thechatroom.cleverapps.io/ws")
+    var output=document.getElementById("output");
+    function test(){
+        socket.onopen=function(e){
+        console.log("connection established")
+        writeToScreen("connected")
+        writeToScreen("new user joined");
+        }
         
-         socket.onmessage=function(e){
-            var msg1=e.data;
-                obj=JSON.parse(msg1)
-                writeToScreen('<span style="color:blue;"> '+obj.username+':'+obj.message+'</span>')
-             //var msg2=document.getElementById("messages").innerHTML=msg1;
-         }
-        }
-        function writeToScreen(message){
-            var pre=document.createElement("p")
-            pre.style.wordWrap="break-word"
-            pre.innerHTML=message;output.appendChild(pre);
+        
+        
+        var msg=document.getElementById("msg").value;
+        var user=document.getElementById("user").value;
+        console.log(msg)
+        socket.send(JSON.stringify(
+            {
+                username:user,
+                message:msg
+            }
+        ));
 
-        }
-        //window.addEventListener("load",init,false)
-    </script>
-    </html>
+    
+     socket.onmessage=function(e){
+        var msg1=e.data;
+            obj=JSON.parse(msg1)
+            writeToScreen('<li><div class="row comments mb-2" ><div class="col-md-2 col-sm-2 col-3 text-center user-img"><img id="profile-photo" src="http://nicesnippets.com/demo/man01.png" class="rounded-circle" /></div><div class="col-md-9 col-sm-9 col-9 comment rounded mb-2" ><h4 class="m-0"><a href="#">'+obj.username+'</a></h4><p class="mb-0 text-white">'+obj.message+'</p></div></div></li>')
+            writeToScreen('')
+         //var msg2=document.getElementById("messages").innerHTML=msg1;
+     }
+    }
+    function writeToScreen(message){
+        var pre=document.createElement("p")
+        pre.style.wordWrap="break-word"
+        pre.innerHTML=message;output.appendChild(pre);
+
+    }
+    //window.addEventListener("load",init,false)
+</script>
+</html>
