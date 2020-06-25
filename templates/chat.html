@@ -128,6 +128,7 @@
         
         var msg=document.getElementById("msg").value;
         var user=document.getElementById("user").value;
+	    if(msg!=""){
         console.log(msg)
         socket.send(JSON.stringify(
             {
@@ -135,7 +136,7 @@
                 message:msg
             }
         ));
-
+	    }
     
      socket.onmessage=function(e){
         var msg1=e.data;
